@@ -250,6 +250,22 @@ if(strpos(strtolower($messageText), 'website') !== false) { //get the website of
     'recipient' => [ 'id' => $senderId ],
     'message' => [ 'text' => $answer ]
 ];
+//ROOKIE YEAR
+	$isteamvalid = file_get_contents("http://www.thebluealliance.com/_/nightbot/status/{$nbteam}"); // this line check if the team exist with a http request to the status nightbot command
+}
+if(strpos(strtolower($messageText), 'rookie year') !== false) { //get the rookie year of a team
+	
+	$nbteam = filter_var($messageText, FILTER_SANITIZE_NUMBER_INT);
+	
+	
+	$json_string = file_get_contents("http://www.thebluealliance.com/api/v2/team/frc{$nbteam}?X-TBA-App-Id=frcbot:messengerchatbot:1");
+    $parsed_json = json_decode($json_string);
+	$answer = "Team {$nbteam}'s rookie year was " . $parsed_json->{'rookie_year'};
+	
+	$response = [
+    'recipient' => [ 'id' => $senderId ],
+    'message' => [ 'text' => $answer ]
+];
 $isteamvalid = file_get_contents("http://www.thebluealliance.com/_/nightbot/status/{$nbteam}"); // this line check if the team exist with a http request to the status nightbot command
 }
 if(strpos(strtolower($messageText), 'location') !== false) { //get the location of a team
@@ -268,22 +284,6 @@ if(strpos(strtolower($messageText), 'location') !== false) { //get the location 
   ),
   'message' => 
   array (
-    'attachment' => 
-    array (
-      'type' => 'template',
-      'payload' => 
-      array (
-        'template_type' => 'button',
-        'text' => $answer,
-        'buttons' => 
-        array (
-          0 => 
-          array (
-            'type' => 'web_url',
-            'url' => "https://www.google.com/maps/place/" . $parsed_json->{'location'},
-            'title' => "View on Google Maps",
-          ),
-        ),
       ),
     ),
   ),
